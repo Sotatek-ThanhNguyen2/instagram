@@ -8,102 +8,80 @@
 
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Image,
-   TouchableHighlight, TouchableNativeFeedback, Alert, FlatList} from 'react-native';
+   TouchableHighlight, TouchableNativeFeedback, TouchableWithoutFeedback,
+    Alert, FlatList, Button} from 'react-native';
+import { createStackNavigator, createAppContainer, createBottomTabNavigator } from "react-navigation";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/Ionicons';
+import SearchScreen from './screen/SearchScreen';
+import HomeScreen from './screen/HomeScreen';
+import AddScreen from './screen/AddScreen';
+import FavoriteScreen from './screen/FavoriteScreen';
+import UserScreen from './screen/UserScreen';
 
 type Props = {};
 
-class HeaderHome extends Component{
-
-  onPressCamera(){
-    Alert.alert("Just press camera")
+const TabNavigator = createBottomTabNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions:{
+      title:'Home',
+      tabBarIcon: ({tintColor,focused})=> (
+        focused ? <Image source={require('./assets/tb_home_a.png')} style={styles.tabBarIcon}/> : 
+        <Image source={require('./assets/tb_home.png')} style={styles.tabBarIcon}/>
+      )
+    }
   }
-
-  onPressLiveStream(){
-    Alert.alert("Just press livestream")
-  }
-
-  onPressSending(){
-    Alert.alert("Just press sending")
-  }
-
-  render(){
-
-    return(
-        <View style={styles.header}>
-          <View style={styles.leftHeader}>
-            <TouchableNativeFeedback onPress={this.onPressCamera} underlayColor='white'>
-              <View>
-                <Image source={require('./assets/camera.png')}
-                  style={styles.headerCamera} />
-              </View>
-             
-            </TouchableNativeFeedback>
-
-            <Text style={{fontSize:24, marginLeft:20}}>
-            Insta
-            </Text>
-          </View>
-
-          <View style={styles.rightHeader}>
-            <TouchableNativeFeedback onPress={this.onPressLiveStream}>
-              <View>
-                <Image source={require('./assets/video.png')}
-                style={styles.rightHeaderIcon} />
-              </View>
-            </TouchableNativeFeedback>
-
-            <TouchableNativeFeedback onPress={this.onPressSending}>
-              <View>
-                <Image source={require('./assets/send.png')}
-                style={styles.rightHeaderIcon} />
-              </View>
-            </TouchableNativeFeedback>
-          </View>
-            
-        </View>
-    )
-  }
-}
-
-class StoryList extends Component{
-
-  render(){
-    return(
-      <View style={{backgroundColor:'#fff',
-       height:80 }}>
-        <FlatList data={[{firstItem:false, content:"Park hang seo"}
-        , {firstItem:true, content:"Park hang seo"}
-        , {firstItem:true, content:"Park hang seo"}
-        , {firstItem:true, content:"Park hang seo"}
-        , {firstItem:true, content:"Park hang seo"}
-        , {firstItem:true, content:"Park hang seo"}
-        , {firstItem:true, content:"Park hang seo"}]} 
-        renderItem = {({item})=> ( 
-              <View style={{margin:10,
-              justifyContent:'center',
-               alignItems:'center'}}>
-               <View style={ item.firstItem && styles.storyListCircle}>
-                 <Image source={require('./assets/camera.png')}
-                  style={{borderRadius:25, borderColor:'#345', borderWidth:1, width:50, height:50}}>
-                  </Image>
-                  <Image source={require('./assets/camera.png')}
-                    style={{borderRadius:25, borderColor:'#345', borderWidth:1, width:20, height:20}}>
-                    </Image>
-               </View>
-               <Text style={{fontSize:11}}>{item.content}</Text>
-             </View>
-         )
+  ,
+  Search: {
+    screen: SearchScreen,
+    navigationOptions:{
+      title:'Search',
+      tabBarIcon: ({ focused, tintcolor }) =>  (focused ? 
+        <Image source={require('./assets/tb_search_a.png')} style={styles.tabBarIcon} /> : 
+      <Image source={require('./assets/tb_search.png')} style={styles.tabBarIcon}/>
+        ) 
+      }
+    } ,
+  Add: {
+    screen: AddScreen,
+    navigationOptions:{
+      title:'Add',
+      tabBarIcon: ({ focused, tintcolor }) =>  (focused ? 
+        <Image source={require('./assets/tb_add.png')} style={styles.tabBarIcon}/> : 
+      <Image source={require('./assets/tb_add.png')} style={styles.tabBarIcon}/>
+        ) 
+      }
+    } ,
+  Favorite: {
+    screen: FavoriteScreen,
+    navigationOptions:{
+      title:'Favorite',
+      tabBarIcon: ({ focused, tintcolor }) =>  (focused ? 
+        <Image source={require('./assets/tb_heart_a.png')} style={styles.tabBarIcon}/> : 
+      <Image source={require('./assets/tb_heart.png')} style={styles.tabBarIcon}/>
+        ) 
+      }
+    } ,
+    User: {
+      screen: UserScreen,
+      navigationOptions:{
+        title:'User',
+        tabBarIcon: ({ focused, tintcolor }) =>  (focused ? 
+          <Image source={require('./assets/tb_user_a.png')} style={styles.tabBarIcon}/> : 
+        <Image source={require('./assets/tb_user.png')} style={styles.tabBarIcon}/>
+          ) 
         }
-        horizontal={true}
-        >
-        </FlatList>
-      </View>
-    )
+      }
+},{
+  initialRouteName: 'Home',
+  tabBarOptions:{
+    showLabel:false
   }
+},
+);
 
-
-}
-
+const AppContainer = createAppContainer(TabNavigator);
 
 export default class App extends Component<Props> {
   constructor(props){
@@ -112,12 +90,14 @@ export default class App extends Component<Props> {
 
   render(){
     return(
-      <View style={{flex: 1, alignItems:'stretch'}}>
-        <HeaderHome></HeaderHome>
-        <View style={{backgroundColor:'#000', height: 1, opacity: 0.5 }}></View>
-        <StoryList></StoryList>
-        <View style={{backgroundColor:'#000', height: 0.5, opacity: 0.2 }}></View>
-      </View>
+      // <View style={{flex: 1, alignItems:'stretch'}}>
+      //   <HeaderHome></HeaderHome>
+      //   <View style={{backgroundColor:'#000', height: 1, opacity: 0.5 }}></View>
+      //   <StoryList></StoryList>
+      //   <View style={{backgroundColor:'#000', height: 0.5, opacity: 0.2 }}></View>
+      //   <NewFeedList></NewFeedList>
+      // </View>
+      <AppContainer/>
     );
   }
 }
@@ -152,5 +132,24 @@ const styles = StyleSheet.create({
   storyListCircle:{
     borderRadius:30, borderColor:'#567565', 
     borderWidth:3, width:60, height:60, justifyContent:'center', alignItems:'center'
-  }
+  },
+  smallStoryListCircle:{
+    borderRadius:17, borderColor:'#567565', 
+    borderWidth:2, width:34, height:34, justifyContent:'center',
+     alignItems:'center', margin:10
+  },
+  storyListAddNew:{
+    borderRadius:25, borderColor:'#fff',
+  borderWidth:1, width:20, height:20, position:'absolute',
+  bottom:0,right:0
+},
+storyListNoAddNew:{
+  borderRadius:25, borderColor:'#fff',
+borderWidth:1, width:0, height:0, position:'absolute',
+bottom:0,right:0
+},
+tabBarIcon:{
+  width:20,
+  height:20
+}
 });
